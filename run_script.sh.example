@@ -1,0 +1,4 @@
+cd ~/temperature-logger
+. .venv/bin/activate
+python main.py
+deactivate
