@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# Configuration
+INTERVAL_MINUTES=10
+LOG_FILE="/app/logs/temperature-logger.log"
+HEALTHCHECK_URL="enter your healthcheck url"
+
+mkdir -p $(dirname "$LOG_FILE")
+
+trap "echo '$(date) - Container stopping gracefully...'; exit 0" SIGTERM SIGINT
+
+echo "$(date) - Starting monitoring loop (runs every $INTERVAL_MINUTES minutes)" >> "$LOG_FILE"
+
+while true; do
+    # TIMESTAMP=$(date "+%Y-%m-%d %H:%M:%S")
+    TIMESTAMP=$(date)
+    
+    if python main.py >> "$LOG_FILE" 2>&1; then
+        curl -fsS -m 10 --retry 5 -o /dev/null "$HEALTHCHECK_URL" || true
+        echo "$TIMESTAMP - Success" >> "$LOG_FILE"
+    else
+        echo "$TIMESTAMP - Failed" >> "$LOG_FILE"
+    fi
+    
+    sleep $((60 * INTERVAL_MINUTES)) & wait
+done

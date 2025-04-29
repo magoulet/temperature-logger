@@ -164,5 +164,6 @@ cython_debug/
 # User configuration
 config.py
 
-# User run script
+# User scripts
 run_script.sh
+run_loop.sh

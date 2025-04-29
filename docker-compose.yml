@@ -1,0 +1,9 @@
+services:
+  temperature-logger:
+    build: .
+    container_name: temp-logger
+    devices:
+      - "/dev/i2c-1:/dev/i2c-1"
+    volumes:
+      - ~/logs:/app/logs
+    restart: unless-stopped
