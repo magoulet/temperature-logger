@@ -167,3 +167,6 @@ config.py
 # User scripts
 run_script.sh
 run_loop.sh
+
+# pyenv
+.python-version
